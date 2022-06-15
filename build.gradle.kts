@@ -32,14 +32,11 @@ dependencies {
     testImplementation("org.apache.logging.log4j:log4j-slf4j-impl:2.17.2")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
-}
-
-dependencies {
     testImplementation(kotlin("test"))
 }
 
 tasks.test {
-    useTestNG()
+    useTestNG { suiteXmlFiles = listOf(File("src/test/resources/testng.xml")) }
 }
 
 tasks.withType<KotlinCompile> {

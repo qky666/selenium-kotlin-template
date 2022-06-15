@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="All Test Suite">
-    <test name="MTP tests" parallel="methods">
+    <test name="MTP Desktop tests">
         <classes>
-            <class name="testng.MtpKotlinTest"/>
+            <class name="testng.MtpKotlinDesktop"/>
+        </classes>
+    </test>
+    <test name="MTP Mobile tests" enabled="false">
+        <classes>
+            <class name="testng.MtpKotlinMobile"/>
         </classes>
     </test>
 </suite>

@@ -8,3 +8,5 @@ Template for Kotlin Selenium automation project
 - Report: Allure + Single file
 - Cloud: LambdaTest
 - CI/CD: Azure Devops
+- Cucumber
+- Test data: ¿JSON? ¿Data class?
