@@ -3,12 +3,20 @@
 <suite name="All Test Suite">
     <test name="MTP Desktop tests">
         <classes>
-            <class name="testng.MtpKotlinDesktop"/>
+            <class name="testng.MtpKotlinTest">
+                <methods>
+                    <include name=".*Desktop"/>
+                </methods>
+            </class>
         </classes>
     </test>
     <test name="MTP Mobile tests" enabled="false">
         <classes>
-            <class name="testng.MtpKotlinMobile"/>
+            <class name="testng.MtpKotlinTest">
+                <methods>
+                    <include name=".*Mobile"/>
+                </methods>
+            </class>
         </classes>
     </test>
 </suite>

@@ -28,8 +28,8 @@ dependencies {
     // https://mvnrepository.com/artifact/io.github.microutils/kotlin-logging
     testImplementation("io.github.microutils:kotlin-logging:2.1.23")
 
-    // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j-impl
-    testImplementation("org.apache.logging.log4j:log4j-slf4j-impl:2.17.2")
+    // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api-kotlin
+    runtimeOnly("org.apache.logging.log4j:log4j-api-kotlin:1.1.0")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
     testImplementation(kotlin("test"))

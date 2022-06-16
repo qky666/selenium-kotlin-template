@@ -1,12 +1,14 @@
 # selenium-kotlin-template
 Template for Kotlin Selenium automation project
 
+## Core technologies
+- TestNG: https://testng.org/doc/index.html
+-
+
 ## TODO
-- TestNG
-- Sample code
 - Logs: log4j
 - Report: Allure + Single file
-- Cloud: LambdaTest
-- CI/CD: Azure Devops
 - Cucumber
 - Test data: ¿JSON? ¿Data class?
+- Cloud: LambdaTest
+- CI/CD: Azure Devops
