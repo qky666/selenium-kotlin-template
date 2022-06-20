@@ -2,27 +2,31 @@ package testng
 
 import com.codeborne.selenide.Condition
 import com.codeborne.selenide.Selenide
+import org.apache.logging.log4j.kotlin.Logging
 import org.testng.annotations.AfterMethod
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 import pom.mainFramePage
 import pom.servicesPage
 
-open class MtpKotlinTest {
+open class MtpKotlinTest: Logging {
 
     @BeforeMethod
     fun openBrowser() {
         Selenide.open("")
+        logger.info {"URL opened"}
     }
 
     @AfterMethod
     fun closeBrowser() {
         Selenide.closeWebDriver()
+        logger.info {"Closed webdriver"}
     }
 
     private fun acceptCookies() {
         mainFramePage.shouldLoadRequired()
         mainFramePage.cookiesBanner.acceptCookies()
+        logger.info {"Cookies accepted"}
     }
 
     @Test
