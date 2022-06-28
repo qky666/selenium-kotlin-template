@@ -9,6 +9,7 @@ plugins {
     kotlin("jvm") version kotlinVersion
     `java-library`
     id("com.github.ben-manes.versions") version "0.42.0"
+    id("io.qameta.allure") version "2.10.0"
 }
 
 repositories {
@@ -20,10 +21,10 @@ dependencies {
     val kotlinVersion = "1.7.0"
 
     // https://mvnrepository.com/artifact/com.codeborne/selenide
-    testImplementation("com.codeborne:selenide:6.6.3")
+    testImplementation("com.codeborne:selenide:6.6.5")
 
     // https://jitpack.io/#qky666/selenide-pom
-    testImplementation("com.github.qky666:selenide-pom:0.8.6")
+    testImplementation("com.github.qky666:selenide-pom:0.8.7")
 
     // https://mvnrepository.com/artifact/io.github.microutils/kotlin-logging
     testImplementation("io.github.microutils:kotlin-logging:2.1.23")
@@ -38,6 +39,10 @@ dependencies {
     testImplementation(kotlin("test"))
 }
 
+allure {
+    version.set("2.18.1")
+}
+
 tasks.test {
     useTestNG { suiteXmlFiles = listOf(File("src/test/resources/testng.xml")) }
 }
@@ -47,4 +52,10 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "17"
     // kotlinOptions.freeCompilerArgs += "-Xjvm-default=all"
     // kotlinOptions.freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
+}
+
+task<Exec>("allureSingleFile") {
+    workingDir("./allure-single-html-file-main")
+    commandLine("python", "combine.py", "../build/reports/allure-report/allureReport")
+    setDependsOn(listOf("allureReport"))
 }

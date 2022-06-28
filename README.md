@@ -2,11 +2,12 @@
 Template for Kotlin Selenium automation project
 
 ## Core technologies
-- TestNG: https://testng.org/doc/index.html
-- Log4j: https://logging.apache.org/log4j/2.x/#
+- Test framework: TestNG (https://testng.org/doc/index.html)
+- Logs: Log4j (https://logging.apache.org/log4j/2.x/#)
+- Report: Allure (https://docs.qameta.io/allure-report/)
 
 ## TODO
-- Report: Allure + Single file
+- pip install allure-combine
 - Cucumber
 - Test data: ¿JSON? ¿Data class?
 - Cloud: LambdaTest
