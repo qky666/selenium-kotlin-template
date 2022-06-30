@@ -24,7 +24,7 @@ dependencies {
     testImplementation("com.codeborne:selenide:6.6.5")
 
     // https://jitpack.io/#qky666/selenide-pom
-    testImplementation("com.github.qky666:selenide-pom:0.8.7")
+    testImplementation("com.github.qky666:selenide-pom:0.9.1")
 
     // https://mvnrepository.com/artifact/io.github.microutils/kotlin-logging
     testImplementation("io.github.microutils:kotlin-logging:2.1.23")
@@ -49,13 +49,15 @@ tasks.test {
 
 tasks.withType<KotlinCompile> {
     // kotlinOptions.jvmTarget = "1.8"
-    kotlinOptions.jvmTarget = "17"
+    kotlinOptions.jvmTarget = "11"
     // kotlinOptions.freeCompilerArgs += "-Xjvm-default=all"
     // kotlinOptions.freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
 }
 
-task<Exec>("allureSingleFile") {
-    workingDir("./allure-single-html-file-main")
-    commandLine("python", "combine.py", "../build/reports/allure-report/allureReport")
+task<Exec>("allureCombine") {
+    commandLine("poetry", "run", "ac", "build/reports/allure-report/allureReport",
+        "--dest", "build/reports/allure-combine",
+        "--auto-create-folders",
+        "--remove-temp-files")
     setDependsOn(listOf("allureReport"))
 }

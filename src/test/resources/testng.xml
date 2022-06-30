@@ -1,22 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="All Test Suite">
+<suite name="All Test Suite" parallel="true" thread-count="4">
+    <listeners>
+        <listener class-name="testng.listeners.TestNGListener"/>
+    </listeners>
     <test name="MTP Desktop tests">
+        <parameter name="browser" value="firefox"/>
+        <parameter name="mobile" value="false"/>
+        <groups>
+            <run>
+                <exclude name="Mobile"/>
+            </run>
+        </groups>
         <classes>
-            <class name="testng.MtpKotlinTest">
-                <methods>
-                    <include name=".*Desktop"/>
-                </methods>
-            </class>
+            <class name="testng.tests.MtpKotlinTest"/>
         </classes>
     </test>
-    <test name="MTP Mobile tests" enabled="false">
+    <test name="MTP Mobile tests">
+        <parameter name="browser" value="chrome"/>
+        <parameter name="mobile" value="true"/>
+        <groups>
+            <run>
+                <include name="Mobile"/>
+            </run>
+        </groups>
         <classes>
-            <class name="testng.MtpKotlinTest">
-                <methods>
-                    <include name=".*Mobile"/>
-                </methods>
-            </class>
+            <class name="testng.tests.MtpKotlinTest"/>
         </classes>
     </test>
 </suite>

@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "selenium-kotlin-template"
+version = "0.1.0"
+description = "Python support for selenium-kotling-template"
+authors = ["José Torrecilla Álvarez <qky669@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+allure-combine = "^1.0.6"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
