@@ -3,6 +3,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 group = "es.mtp"
 version = "0.1.0"
 
+repositories {
+    mavenCentral()
+    maven("https://jitpack.io")
+}
+
 plugins {
     val kotlinVersion = "1.7.0"
 
@@ -12,19 +17,24 @@ plugins {
     id("io.qameta.allure") version "2.10.0"
 }
 
-repositories {
-    mavenCentral()
-    maven("https://jitpack.io")
-}
-
 dependencies {
     val kotlinVersion = "1.7.0"
+    val cucumberVersion = "7.4.1"
 
     // https://mvnrepository.com/artifact/com.codeborne/selenide
     testImplementation("com.codeborne:selenide:6.6.5")
 
     // https://jitpack.io/#qky666/selenide-pom
     testImplementation("com.github.qky666:selenide-pom:0.9.1")
+
+    // https://mvnrepository.com/artifact/io.cucumber/cucumber-java
+    implementation("io.cucumber:cucumber-java:$cucumberVersion")
+
+    // https://mvnrepository.com/artifact/io.cucumber/cucumber-testng
+    implementation("io.cucumber:cucumber-testng:$cucumberVersion")
+
+    // https://mvnrepository.com/artifact/com.github.automatedowl/allure-environment-writer
+    implementation("com.github.automatedowl:allure-environment-writer:1.0.0")
 
     // https://mvnrepository.com/artifact/io.github.microutils/kotlin-logging
     testImplementation("io.github.microutils:kotlin-logging:2.1.23")
@@ -55,9 +65,15 @@ tasks.withType<KotlinCompile> {
 }
 
 task<Exec>("allureCombine") {
-    commandLine("poetry", "run", "ac", "build/reports/allure-report/allureReport",
-        "--dest", "build/reports/allure-combine",
+    commandLine(
+        "poetry",
+        "run",
+        "ac",
+        "build/reports/allure-report/allureReport",
+        "--dest",
+        "build/reports/allure-combine",
         "--auto-create-folders",
-        "--remove-temp-files")
+        "--remove-temp-files"
+    )
     setDependsOn(listOf("allureReport"))
 }

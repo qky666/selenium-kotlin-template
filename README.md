@@ -39,10 +39,16 @@ Allure: https://docs.qameta.io/allure-report/
 
 allure-combine: https://github.com/MihanEntalpo/allure-single-html-file
 
+## Selenium
+
+Selenide: https://selenide.org/index.html
+
+Selenide-POM: https://github.com/qky666/selenide-pom
+
 
 ## TODO
-- Rerun
 - Cucumber
+- Rerun Cucumber
 - Test data: ¿JSON? ¿Data class?
 - Cloud: LambdaTest
 - CI/CD: Azure Devops
