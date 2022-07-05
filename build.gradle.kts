@@ -19,31 +19,21 @@ plugins {
 
 dependencies {
     val kotlinVersion = "1.7.0"
-    val cucumberVersion = "7.4.1"
 
     // https://mvnrepository.com/artifact/com.codeborne/selenide
-    testImplementation("com.codeborne:selenide:6.6.5")
+    testImplementation("com.codeborne:selenide:6.6.6")
 
     // https://jitpack.io/#qky666/selenide-pom
     testImplementation("com.github.qky666:selenide-pom:0.9.1")
-
-    // https://mvnrepository.com/artifact/io.cucumber/cucumber-java
-    implementation("io.cucumber:cucumber-java:$cucumberVersion")
-
-    // https://mvnrepository.com/artifact/io.cucumber/cucumber-testng
-    implementation("io.cucumber:cucumber-testng:$cucumberVersion")
-
-    // https://mvnrepository.com/artifact/com.github.automatedowl/allure-environment-writer
-    implementation("com.github.automatedowl:allure-environment-writer:1.0.0")
 
     // https://mvnrepository.com/artifact/io.github.microutils/kotlin-logging
     testImplementation("io.github.microutils:kotlin-logging:2.1.23")
 
     // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j-impl
-    testImplementation("org.apache.logging.log4j:log4j-slf4j-impl:2.17.2")
+    testImplementation("org.apache.logging.log4j:log4j-slf4j-impl:2.18.0")
 
     // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api-kotlin
-    testImplementation("org.apache.logging.log4j:log4j-api-kotlin:1.1.0")
+    testImplementation("org.apache.logging.log4j:log4j-api-kotlin:1.2.0")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
     testImplementation(kotlin("test"))

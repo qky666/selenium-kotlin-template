@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="All Test Suite" parallel="true" thread-count="4">
-    <test name="MTP Desktop tests">
+<suite name="All Test Suite" parallel="methods" thread-count="4">
+    <test name="TestNG MTP Desktop tests" enabled="true">
         <parameter name="browser" value="firefox"/>
         <parameter name="mobile" value="false"/>
         <groups>
@@ -13,7 +13,7 @@
             <class name="testng.tests.MtpKotlinTest"/>
         </classes>
     </test>
-    <test name="MTP Mobile tests">
+    <test name="TestNG MTP Mobile tests" enabled="true">
         <parameter name="browser" value="chrome"/>
         <parameter name="mobile" value="true"/>
         <groups>

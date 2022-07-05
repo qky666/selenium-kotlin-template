@@ -1,22 +1,13 @@
 package util
 
-import com.github.automatedowl.tools.AllureEnvironmentWriter
+import com.codeborne.selenide.Selenide
 import com.github.qky666.selenidepom.SPConfig
-import com.google.common.collect.ImmutableMap
-import org.apache.commons.lang3.StringUtils
+import org.apache.logging.log4j.kotlin.Logging
+import org.testng.ITestResult
 
 
-object Hooks {
+object CommonHooks: Logging {
     fun setupBrowser(browser: String, mobile: String) {
-
-        //Allure environment
-        AllureEnvironmentWriter.allureEnvironmentWriter(
-            ImmutableMap.of(
-                "Browser", StringUtils.capitalize(browser),
-                "Mobile", StringUtils.capitalize(mobile),
-            )
-        )
-
         // Configure WebDriver
         if (mobile.equals("true", true)) {
             SPConfig.resetSelenideConfig()
@@ -27,5 +18,13 @@ object Hooks {
             SPConfig.setPomVersion("desktop")
         }
         SPConfig.setWebDriver()
+    }
+
+    fun testNGAttachScreenshotIfFailedAndCloseWebDriver(result: ITestResult) {
+        if (result.status != ITestResult.SUCCESS) {
+            ReportHelper.attachScreenshot("Test failed screenshot")
+        }
+        Selenide.closeWebDriver()
+        logger.info { "Closed webdriver for test ${result.name}. Status: ${result.status}" }
     }
 }

@@ -12,15 +12,14 @@ import org.testng.annotations.Test
 import pom.mainFramePage
 import pom.servicesPage
 import testng.retry.Retry
-import util.Hooks.setupBrowser
-import util.ReportHelper
+import util.CommonHooks
 
 open class MtpKotlinTest : Logging {
 
     @BeforeMethod(description = "Open base URL in browser", alwaysRun = true)
     @Parameters("browser", "mobile")
     fun beforeMethod(browser: String, mobile: String) {
-        setupBrowser(browser, mobile)
+        CommonHooks.setupBrowser(browser, mobile)
 
         // Open URL
         Selenide.open("")
@@ -29,11 +28,7 @@ open class MtpKotlinTest : Logging {
 
     @AfterMethod(description = "Close browser", alwaysRun = true)
     fun afterMethod(result: ITestResult) {
-        if (result.status != ITestResult.SUCCESS) {
-            ReportHelper.attachScreenshot()
-        }
-        Selenide.closeWebDriver()
-        logger.info { "Closed webdriver for test ${result.name}. Status: ${result.status}" }
+        CommonHooks.testNGAttachScreenshotIfFailedAndCloseWebDriver(result)
     }
 
     @Step("Accept cookies")
