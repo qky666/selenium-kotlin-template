@@ -48,10 +48,7 @@ tasks.test {
 }
 
 tasks.withType<KotlinCompile> {
-    // kotlinOptions.jvmTarget = "1.8"
     kotlinOptions.jvmTarget = "11"
-    // kotlinOptions.freeCompilerArgs += "-Xjvm-default=all"
-    // kotlinOptions.freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
 }
 
 task<Exec>("allureCombine") {
@@ -59,9 +56,9 @@ task<Exec>("allureCombine") {
         "poetry",
         "run",
         "ac",
-        "build/reports/allure-report/allureReport",
+        "$buildDir/reports/allure-report/allureReport",
         "--dest",
-        "build/reports/allure-combine",
+        "$buildDir/reports/allure-combine",
         "--auto-create-folders",
         "--remove-temp-files"
     )
