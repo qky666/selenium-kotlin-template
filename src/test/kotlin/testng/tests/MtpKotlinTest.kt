@@ -2,6 +2,7 @@ package testng.tests
 
 import com.codeborne.selenide.Condition
 import com.codeborne.selenide.Selenide
+import com.github.qky666.selenidepom.SPConfig
 import io.qameta.allure.Step
 import org.apache.logging.log4j.kotlin.Logging
 import org.testng.ITestResult
@@ -12,15 +13,18 @@ import org.testng.annotations.Test
 import pom.mainFramePage
 import pom.servicesPage
 import testng.retry.Retry
-import util.CommonHooks
+import util.ReportHelper
 
 open class MtpKotlinTest : Logging {
 
     @BeforeMethod(description = "Open base URL in browser", alwaysRun = true)
     @Parameters("browser", "mobile")
     fun beforeMethod(browser: String, mobile: String) {
-        CommonHooks.setupBrowser(browser, mobile)
-
+        if (mobile.equals("true", true)) {
+            SPConfig.setupBasicMobileBrowser()
+        } else {
+            SPConfig.setupBasicDesktopBrowser(browser)
+        }
         // Open URL
         Selenide.open("")
         logger.info { "URL opened. Browser: $browser. Mobile: $mobile" }
@@ -28,7 +32,11 @@ open class MtpKotlinTest : Logging {
 
     @AfterMethod(description = "Close browser", alwaysRun = true)
     fun afterMethod(result: ITestResult) {
-        CommonHooks.testNGAttachScreenshotIfFailedAndCloseWebDriver(result)
+        if (result.status != ITestResult.SUCCESS) {
+            ReportHelper.attachScreenshot("Test failed screenshot")
+        }
+        Selenide.closeWebDriver()
+        logger.info { "Closed webdriver for test ${result.name}. Status: ${result.status}" }
     }
 
     @Step("Accept cookies")

@@ -9,25 +9,17 @@ repositories {
 }
 
 plugins {
-    val kotlinVersion = "1.7.0"
-
-    kotlin("jvm") version kotlinVersion
-    `java-library`
+    kotlin("jvm") version "1.7.0"
     id("com.github.ben-manes.versions") version "0.42.0"
     id("io.qameta.allure") version "2.10.0"
 }
 
 dependencies {
-    val kotlinVersion = "1.7.0"
-
     // https://mvnrepository.com/artifact/com.codeborne/selenide
     testImplementation("com.codeborne:selenide:6.6.6")
 
     // https://jitpack.io/#qky666/selenide-pom
-    testImplementation("com.github.qky666:selenide-pom:0.9.1")
-
-    // https://mvnrepository.com/artifact/io.github.microutils/kotlin-logging
-    testImplementation("io.github.microutils:kotlin-logging:2.1.23")
+    testImplementation("com.github.qky666:selenide-pom:0.9.3")
 
     // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j-impl
     testImplementation("org.apache.logging.log4j:log4j-slf4j-impl:2.18.0")
@@ -35,7 +27,6 @@ dependencies {
     // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api-kotlin
     testImplementation("org.apache.logging.log4j:log4j-api-kotlin:1.2.0")
 
-    testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
     testImplementation(kotlin("test"))
 }
 
