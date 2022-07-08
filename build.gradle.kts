@@ -9,7 +9,7 @@ repositories {
 }
 
 plugins {
-    kotlin("jvm") version "1.7.0"
+    kotlin("jvm") version "1.7.10"
     id("com.github.ben-manes.versions") version "0.42.0"
     id("io.qameta.allure") version "2.10.0"
 }
@@ -19,7 +19,7 @@ dependencies {
     testImplementation("com.codeborne:selenide:6.6.6")
 
     // https://jitpack.io/#qky666/selenide-pom
-    testImplementation("com.github.qky666:selenide-pom:0.9.3")
+    testImplementation("com.github.qky666:selenide-pom:0.9.4")
 
     // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j-impl
     testImplementation("org.apache.logging.log4j:log4j-slf4j-impl:2.18.0")
