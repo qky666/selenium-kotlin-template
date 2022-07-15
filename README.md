@@ -1,6 +1,6 @@
 # selenium-kotlin-template
 
-Template for Kotlin Selenium automation project
+Template for Selenium Kotlin automation project
 
 
 ## Requirements
