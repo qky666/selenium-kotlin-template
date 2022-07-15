@@ -46,7 +46,11 @@ open class MtpKotlinTest : Logging {
         logger.info { "Cookies accepted" }
     }
 
-    @Test(description = "Desktop. User navigate to Quality Assurance", retryAnalyzer = Retry::class)
+    @Test(
+        description = "User navigate to Quality Assurance (desktop)",
+        groups = ["desktop"],
+        retryAnalyzer = Retry::class
+    )
     fun userNavigateToQualityAssuranceDesktop() {
         acceptCookies()
         mainFramePage.mainMenu.services.hover()
@@ -54,22 +58,11 @@ open class MtpKotlinTest : Logging {
         servicesPage.shouldLoadRequired()
     }
 
-    @Test(description = "Desktop. Forced failure", retryAnalyzer = Retry::class)
-    fun forcedFailureDesktop() {
-        acceptCookies()
-        servicesPage.shouldLoadRequired()
-    }
-
-    @Test(description = "Desktop. Cookies should not reappear after accepted", retryAnalyzer = Retry::class)
-    fun userNavigateToQualityAssuranceCookiesShouldNotReappearDesktop() {
-        acceptCookies()
-        mainFramePage.mainMenu.services.hover()
-        mainFramePage.mainMenu.servicesPopUpQualityAssurance.click()
-        servicesPage.shouldLoadRequired()
-        mainFramePage.cookiesBanner.self.shouldNotBe(Condition.visible)
-    }
-
-    @Test(description = "Mobile. User navigate to Quality Assurance", groups = ["Mobile"], retryAnalyzer = Retry::class)
+    @Test(
+        description = "User navigate to Quality Assurance (mobile)",
+        groups = ["mobile"],
+        retryAnalyzer = Retry::class
+    )
     fun userNavigateToQualityAssuranceMobile() {
         acceptCookies()
         mainFramePage.mobileMenuButton.click()
@@ -80,15 +73,30 @@ open class MtpKotlinTest : Logging {
         servicesPage.shouldLoadRequired()
     }
 
-    @Test(description = "Mobile. Forced failure", groups = ["Mobile"], retryAnalyzer = Retry::class)
-    fun forcedFailureMobile() {
+    @Test(description = "Forced failure", groups = ["desktop", "mobile"], retryAnalyzer = Retry::class)
+    fun forcedFailure() {
         acceptCookies()
         servicesPage.shouldLoadRequired()
     }
 
     @Test(
-        description = "Mobile. Cookies should not reappear after accepted",
-        groups = ["Mobile"],
+        description = "Cookies should not reappear after accepted (desktop)",
+        groups = ["desktop"],
+        retryAnalyzer = Retry::class
+    )
+    fun userNavigateToQualityAssuranceCookiesShouldNotReappearDesktop() {
+        acceptCookies()
+        mainFramePage.mainMenu.services.hover()
+        mainFramePage.mainMenu.servicesPopUpQualityAssurance.click()
+        servicesPage.shouldLoadRequired()
+        mainFramePage.cookiesBanner.self.shouldNotBe(Condition.visible)
+    }
+
+
+
+    @Test(
+        description = "Cookies should not reappear after accepted (mobile)",
+        groups = ["mobile"],
         retryAnalyzer = Retry::class
     )
     fun userNavigateToQualityAssuranceCookiesShouldNotReappearMobile() {

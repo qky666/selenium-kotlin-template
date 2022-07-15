@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="All Test Suite" parallel="methods" thread-count="4">
-    <test name="TestNG MTP Desktop tests" enabled="true">
+    <test name="TestNG MTP Firefox Desktop tests" enabled="true">
         <parameter name="browser" value="firefox"/>
         <parameter name="mobile" value="false"/>
         <groups>
             <run>
-                <exclude name="Mobile"/>
+                <include name="desktop"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="testng.tests.MtpKotlinTest"/>
+        </classes>
+    </test>
+    <test name="TestNG MTP Chrome Desktop tests" enabled="true">
+        <parameter name="browser" value="chrome"/>
+        <parameter name="mobile" value="false"/>
+        <groups>
+            <run>
+                <include name="desktop"/>
             </run>
         </groups>
         <classes>
@@ -18,7 +30,7 @@
         <parameter name="mobile" value="true"/>
         <groups>
             <run>
-                <include name="Mobile"/>
+                <include name="mobile"/>
             </run>
         </groups>
         <classes>
