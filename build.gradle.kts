@@ -15,18 +15,10 @@ plugins {
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/com.codeborne/selenide
     testImplementation("com.codeborne:selenide:6.6.6")
-
-    // https://jitpack.io/#qky666/selenide-pom
     testImplementation("com.github.qky666:selenide-pom:0.9.4")
-
-    // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j-impl
     testImplementation("org.apache.logging.log4j:log4j-slf4j-impl:2.18.0")
-
-    // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api-kotlin
     testImplementation("org.apache.logging.log4j:log4j-api-kotlin:1.2.0")
-
     testImplementation(kotlin("test"))
 }
 
