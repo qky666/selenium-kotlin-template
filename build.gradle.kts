@@ -16,7 +16,7 @@ plugins {
 
 dependencies {
     testImplementation("com.codeborne:selenide:6.6.6")
-    testImplementation("com.github.qky666:selenide-pom:0.9.5")
+    testImplementation("com.github.qky666:selenide-pom:0.10.0")
     testImplementation("org.apache.logging.log4j:log4j-slf4j-impl:2.18.0")
     testImplementation("org.apache.logging.log4j:log4j-api-kotlin:1.2.0")
     testImplementation(kotlin("test"))
