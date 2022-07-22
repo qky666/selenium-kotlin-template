@@ -14,19 +14,29 @@ import pom.mainFramePage
 import pom.servicesPage
 import testng.retry.Retry
 import util.ReportHelper
+import util.TestData
 
 open class MtpKotlinTest : Logging {
 
+    private val threadLocalData: ThreadLocal<TestData> = ThreadLocal.withInitial { TestData("prod") }
+    private var data
+        get() = threadLocalData.get()
+        set(value) {threadLocalData.set(value)}
+
     @BeforeMethod(description = "Open base URL in browser", alwaysRun = true)
-    @Parameters("browser", "mobile")
-    fun beforeMethod(browser: String, mobile: String) {
+    @Parameters("browser", "mobile", "env")
+    fun beforeMethod(browser: String, mobile: String, env: String) {
+        // Set env
+        data = TestData(env)
+        val baseUrl = data.input.getProperty("data.input.baseUrl")
+        // Configure webdriver
         if (mobile.equals("true", true)) {
             SPConfig.setupBasicMobileBrowser()
         } else {
             SPConfig.setupBasicDesktopBrowser(browser)
         }
         // Open URL
-        Selenide.open("")
+        Selenide.open(baseUrl)
         logger.info { "URL opened. Browser: $browser. Mobile: $mobile" }
     }
 

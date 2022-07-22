@@ -2,8 +2,7 @@ package testng.retry
 
 import org.testng.IRetryAnalyzer
 import org.testng.ITestResult
-import util.propertiesHelper
-
+import util.PropertiesHelper
 
 class Retry : IRetryAnalyzer {
     private var retryCount = 0
@@ -17,6 +16,6 @@ class Retry : IRetryAnalyzer {
     }
 
     companion object {
-        private val maxRetryCount = propertiesHelper.getProperty("maxRetryCount", "0").toInt()
+        private val maxRetryCount = PropertiesHelper().getProperty("maxRetryCount", "0").toInt()
     }
 }
