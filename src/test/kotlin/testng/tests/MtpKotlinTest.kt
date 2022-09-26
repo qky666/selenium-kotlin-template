@@ -1,8 +1,10 @@
 package testng.tests
 
-import com.codeborne.selenide.Condition
+import com.codeborne.selenide.Condition.visible
 import com.codeborne.selenide.Selenide
-import com.github.qky666.selenidepom.SPConfig
+import com.github.qky666.selenidepom.config.SPConfig
+import com.github.qky666.selenidepom.data.TestData
+import com.github.qky666.selenidepom.pom.shouldLoadRequired
 import io.qameta.allure.Step
 import org.apache.logging.log4j.kotlin.Logging
 import org.testng.ITestResult
@@ -14,20 +16,16 @@ import pom.mainFramePage
 import pom.servicesPage
 import testng.retry.Retry
 import util.ReportHelper
-import util.TestData
 
 open class MtpKotlinTest : Logging {
 
-    private val threadLocalData: ThreadLocal<TestData> = ThreadLocal.withInitial { TestData("prod") }
-    private var data
-        get() = threadLocalData.get()
-        set(value) {threadLocalData.set(value)}
+    private var data = TestData("prod")
 
     @BeforeMethod(description = "Open base URL in browser", alwaysRun = true)
     @Parameters("browser", "mobile", "env")
     fun beforeMethod(browser: String, mobile: String, env: String) {
         // Set env
-        data = TestData(env)
+        data.resetData(env)
         val baseUrl = data.input.getProperty("data.input.baseUrl")
         // Configure webdriver
         if (mobile.equals("true", true)) {
@@ -51,8 +49,7 @@ open class MtpKotlinTest : Logging {
 
     @Step("Accept cookies")
     private fun acceptCookies() {
-        mainFramePage.shouldLoadRequired()
-        mainFramePage.cookiesBanner.acceptCookies()
+        mainFramePage.shouldLoadRequired().cookiesBanner.acceptCookies()
         logger.info { "Cookies accepted" }
     }
 
@@ -76,10 +73,10 @@ open class MtpKotlinTest : Logging {
     fun userNavigateToQualityAssuranceMobile() {
         acceptCookies()
         mainFramePage.mobileMenuButton.click()
-        mainFramePage.mobileMenu.shouldLoadRequired()
-        mainFramePage.mobileMenu.shouldBeCollapsed()
-        mainFramePage.mobileMenu.services.click()
-        mainFramePage.mobileMenu.servicesQualityAssurance.shouldBe(Condition.visible).click()
+        val mobileMenu = mainFramePage.mobileMenu
+        mobileMenu.shouldLoadRequired().shouldBeCollapsed()
+        mobileMenu.services.click()
+        mobileMenu.servicesQualityAssurance.shouldBe(visible).click()
         servicesPage.shouldLoadRequired()
     }
 
@@ -98,11 +95,8 @@ open class MtpKotlinTest : Logging {
         acceptCookies()
         mainFramePage.mainMenu.services.hover()
         mainFramePage.mainMenu.servicesPopUpQualityAssurance.click()
-        servicesPage.shouldLoadRequired()
-        mainFramePage.cookiesBanner.self.shouldNotBe(Condition.visible)
+        servicesPage.shouldLoadRequired().cookiesBanner.shouldNotBe(visible)
     }
-
-
 
     @Test(
         description = "Cookies should not reappear after accepted (mobile)",
@@ -112,11 +106,10 @@ open class MtpKotlinTest : Logging {
     fun userNavigateToQualityAssuranceCookiesShouldNotReappearMobile() {
         acceptCookies()
         mainFramePage.mobileMenuButton.click()
-        mainFramePage.mobileMenu.shouldLoadRequired()
-        mainFramePage.mobileMenu.shouldBeCollapsed()
-        mainFramePage.mobileMenu.services.click()
-        mainFramePage.mobileMenu.servicesQualityAssurance.shouldBe(Condition.visible).click()
-        servicesPage.shouldLoadRequired()
-        mainFramePage.cookiesBanner.self.shouldNotBe(Condition.visible)
+        val mobileMenu = mainFramePage.mobileMenu
+        mobileMenu.shouldLoadRequired().shouldBeCollapsed()
+        mobileMenu.services.click()
+        mobileMenu.servicesQualityAssurance.shouldBe(visible).click()
+        servicesPage.shouldLoadRequired().cookiesBanner.shouldNotBe(visible)
     }
 }

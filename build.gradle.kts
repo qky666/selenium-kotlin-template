@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 group = "es.mtp"
-version = "0.1.0"
+version = "0.12.1"
 
 repositories {
     mavenCentral()
@@ -11,13 +11,13 @@ repositories {
 plugins {
     kotlin("jvm") version "1.7.10"
     id("com.github.ben-manes.versions") version "0.42.0"
-    id("io.qameta.allure") version "2.10.0"
+    id("io.qameta.allure") version "2.11.0"
 }
 
 dependencies {
-    testImplementation("com.codeborne:selenide:6.6.6")
-    testImplementation("com.github.qky666:selenide-pom:0.10.0")
-    testImplementation("org.apache.logging.log4j:log4j-slf4j-impl:2.18.0")
+    testImplementation("com.codeborne:selenide:6.8.0")
+    testImplementation("com.github.qky666:selenide-pom:0.12.1")
+    testImplementation("org.apache.logging.log4j:log4j-slf4j-impl:2.19.0")
     testImplementation("org.apache.logging.log4j:log4j-api-kotlin:1.2.0")
     testImplementation(kotlin("test"))
 }
