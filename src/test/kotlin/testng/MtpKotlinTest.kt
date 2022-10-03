@@ -1,11 +1,10 @@
-package testng.tests
+package testng
 
 import com.codeborne.selenide.Condition.visible
 import com.codeborne.selenide.Selenide
 import com.github.qky666.selenidepom.config.SPConfig
 import com.github.qky666.selenidepom.data.TestData
 import com.github.qky666.selenidepom.pom.shouldLoadRequired
-import io.qameta.allure.Step
 import org.apache.logging.log4j.kotlin.Logging
 import org.testng.ITestResult
 import org.testng.annotations.AfterMethod
@@ -14,7 +13,6 @@ import org.testng.annotations.Parameters
 import org.testng.annotations.Test
 import pom.mainFramePage
 import pom.servicesPage
-import testng.retry.Retry
 import util.ReportHelper
 
 open class MtpKotlinTest : Logging {
@@ -47,19 +45,12 @@ open class MtpKotlinTest : Logging {
         logger.info { "Closed webdriver for test ${result.name}. Status: ${result.status}" }
     }
 
-    @Step("Accept cookies")
-    private fun acceptCookies() {
-        mainFramePage.shouldLoadRequired().cookiesBanner.acceptCookies()
-        logger.info { "Cookies accepted" }
-    }
-
     @Test(
         description = "User navigate to Quality Assurance (desktop)",
-        groups = ["desktop"],
-        retryAnalyzer = Retry::class
+        groups = ["desktop"]
     )
     fun userNavigateToQualityAssuranceDesktop() {
-        acceptCookies()
+        mainFramePage.acceptCookies()
         mainFramePage.mainMenu.services.hover()
         mainFramePage.mainMenu.servicesPopUpQualityAssurance.click()
         servicesPage.shouldLoadRequired()
@@ -67,11 +58,10 @@ open class MtpKotlinTest : Logging {
 
     @Test(
         description = "User navigate to Quality Assurance (mobile)",
-        groups = ["mobile"],
-        retryAnalyzer = Retry::class
+        groups = ["mobile"]
     )
     fun userNavigateToQualityAssuranceMobile() {
-        acceptCookies()
+        mainFramePage.acceptCookies()
         mainFramePage.mobileMenuButton.click()
         val mobileMenu = mainFramePage.mobileMenu
         mobileMenu.shouldLoadRequired().shouldBeCollapsed()
@@ -80,19 +70,21 @@ open class MtpKotlinTest : Logging {
         servicesPage.shouldLoadRequired()
     }
 
-    @Test(description = "Forced failure", groups = ["desktop", "mobile"], retryAnalyzer = Retry::class)
+    @Test(
+        description = "Forced failure",
+        groups = ["desktop", "mobile"]
+    )
     fun forcedFailure() {
-        acceptCookies()
+        mainFramePage.acceptCookies()
         servicesPage.shouldLoadRequired()
     }
 
     @Test(
         description = "Cookies should not reappear after accepted (desktop)",
-        groups = ["desktop"],
-        retryAnalyzer = Retry::class
+        groups = ["desktop"]
     )
     fun userNavigateToQualityAssuranceCookiesShouldNotReappearDesktop() {
-        acceptCookies()
+        mainFramePage.acceptCookies()
         mainFramePage.mainMenu.services.hover()
         mainFramePage.mainMenu.servicesPopUpQualityAssurance.click()
         servicesPage.shouldLoadRequired().cookiesBanner.shouldNotBe(visible)
@@ -100,11 +92,10 @@ open class MtpKotlinTest : Logging {
 
     @Test(
         description = "Cookies should not reappear after accepted (mobile)",
-        groups = ["mobile"],
-        retryAnalyzer = Retry::class
+        groups = ["mobile"]
     )
     fun userNavigateToQualityAssuranceCookiesShouldNotReappearMobile() {
-        acceptCookies()
+        mainFramePage.acceptCookies()
         mainFramePage.mobileMenuButton.click()
         val mobileMenu = mainFramePage.mobileMenu
         mobileMenu.shouldLoadRequired().shouldBeCollapsed()

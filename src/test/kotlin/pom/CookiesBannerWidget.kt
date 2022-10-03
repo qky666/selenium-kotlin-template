@@ -15,7 +15,10 @@ class CookiesBannerWidget(self: SelenideElement) : Widget(self) {
 
     override fun customShouldLoadRequired(timeout: Duration, pomVersion: String) {
         super.customShouldLoadRequired(timeout, pomVersion)
-        cookiesText.shouldHave(text("Utilizamos cookies propias y de terceros para fines analíticos y para mostrarte publicidad personalizada en base a un perfil elaborado a partir de tus hábitos de navegación (por ejemplo, páginas visitadas)"))
+        cookiesText.shouldHave(
+            text("Utilizamos cookies propias y de terceros para fines analíticos y para mostrarte publicidad personalizada en base a un perfil elaborado a partir de tus hábitos de navegación (por ejemplo, páginas visitadas)"),
+            timeout
+        )
     }
 
     fun acceptCookies() {

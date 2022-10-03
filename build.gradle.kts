@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 group = "es.mtp"
-version = "0.12.1"
+version = "0.12.3"
 
 repositories {
     mavenCentral()
@@ -9,15 +9,19 @@ repositories {
 }
 
 plugins {
-    kotlin("jvm") version "1.7.10"
+    kotlin("jvm") version "1.7.20"
     id("com.github.ben-manes.versions") version "0.42.0"
     id("io.qameta.allure") version "2.11.0"
+    id("org.gradle.test-retry") version "1.4.1"
 }
 
 dependencies {
+    val log4jVersion = "2.19.0"
+
     testImplementation("com.codeborne:selenide:6.8.0")
-    testImplementation("com.github.qky666:selenide-pom:0.12.1")
-    testImplementation("org.apache.logging.log4j:log4j-slf4j-impl:2.19.0")
+    testImplementation("com.github.qky666:selenide-pom:0.12.3")
+    testImplementation("org.apache.logging.log4j:log4j-core:$log4jVersion")
+    testImplementation("org.apache.logging.log4j:log4j-slf4j2-impl:$log4jVersion")
     testImplementation("org.apache.logging.log4j:log4j-api-kotlin:1.2.0")
     testImplementation(kotlin("test"))
 }
@@ -27,7 +31,17 @@ allure {
 }
 
 tasks.test {
-    useTestNG { suiteXmlFiles = listOf(File("src/test/resources/testng.xml")) }
+    useTestNG {
+        suiteXmlFiles = listOf(File("src/test/resources/testng.xml"))
+        useDefaultListeners = true
+    }
+    retry {
+        retry {
+            maxRetries.set(1)
+            maxFailures.set(20)
+            failOnPassedAfterRetry.set(false)
+        }
+    }
 }
 
 tasks.withType<KotlinCompile> {

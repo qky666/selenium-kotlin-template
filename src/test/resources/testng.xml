@@ -11,7 +11,7 @@
             </run>
         </groups>
         <classes>
-            <class name="testng.tests.MtpKotlinTest"/>
+            <class name="testng.MtpKotlinTest"/>
         </classes>
     </test>
     <test name="TestNG MTP Chrome Desktop tests" enabled="true">
@@ -23,7 +23,7 @@
             </run>
         </groups>
         <classes>
-            <class name="testng.tests.MtpKotlinTest"/>
+            <class name="testng.MtpKotlinTest"/>
         </classes>
     </test>
     <test name="TestNG MTP Mobile tests" enabled="true">
@@ -35,7 +35,7 @@
             </run>
         </groups>
         <classes>
-            <class name="testng.tests.MtpKotlinTest"/>
+            <class name="testng.MtpKotlinTest"/>
         </classes>
     </test>
 </suite>
