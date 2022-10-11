@@ -1,6 +1,6 @@
 [[package]]
 name = "allure-combine"
-version = "1.0.6"
+version = "1.0.8"
 description = "Generate single HTML file from allure report."
 category = "main"
 optional = false
@@ -46,13 +46,12 @@ python-versions = ">=3.6"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "06abb4db424b26f44f416b4f525da76039f2dd022d447c7999c91e242d78bff8"
+content-hash = "bfa5d7deedcac263276dddeac61fbdab311be7e6d83abe0921edb90db3626d41"
 
 [metadata.files]
 allure-combine = [
-    {file = "allure_combine-1.0.6-py3-none-any.whl", hash = "sha256:6fb6540bde548ab21ae5ac2444dd35e636c45ae5e68a869c66b65ba7070d04df"},
-    {file = "allure_combine-1.0.6-py3.6.egg", hash = "sha256:321feef133e9b1bc91673b1c314a0129a36f18c727819a284ce09ab13185596c"},
-    {file = "allure_combine-1.0.6.tar.gz", hash = "sha256:6a91d610d51829c170e1e8b524e8bc4e287f392d190fb1578807018c67613764"},
+    {file = "allure_combine-1.0.8-py3-none-any.whl", hash = "sha256:7a8d636a02ce3f58b09e8408fe6265e7d9e3d8c5754fce0a19f7a0cf96c3586c"},
+    {file = "allure_combine-1.0.8.tar.gz", hash = "sha256:f16a41f648ce9950dccd1773187b00636f67e1ef1281ba953603380d79a9e4ae"},
 ]
 beautifulsoup4 = [
     {file = "beautifulsoup4-4.11.1-py3-none-any.whl", hash = "sha256:58d5c3d29f5a36ffeb94f02f0d786cd53014cf9b3b3951d42e0080d8a9498d30"},

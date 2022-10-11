@@ -3,7 +3,7 @@ package pom
 import com.codeborne.selenide.Condition.disappear
 import com.codeborne.selenide.Condition.text
 import com.codeborne.selenide.SelenideElement
-import com.github.qky666.selenidepom.annotation.Required
+import com.github.qky666.selenidepom.pom.Required
 import com.github.qky666.selenidepom.pom.Widget
 import com.github.qky666.selenidepom.pom.shouldLoadRequired
 import java.time.Duration

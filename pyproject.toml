@@ -6,7 +6,7 @@ authors = ["José Torrecilla Álvarez <qky669@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-allure-combine = "^1.0.6"
+allure-combine = "^1.0.8"
 
 [tool.poetry.dev-dependencies]
 
