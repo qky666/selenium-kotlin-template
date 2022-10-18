@@ -10,7 +10,7 @@ repositories {
 
 plugins {
     kotlin("jvm") version "1.7.20"
-    id("com.github.ben-manes.versions") version "0.42.0"
+    id("com.github.ben-manes.versions") version "0.43.0"
     id("io.qameta.allure") version "2.11.0"
     id("org.gradle.test-retry") version "1.4.1"
 }
@@ -19,7 +19,7 @@ dependencies {
     val log4jVersion = "2.19.0"
 
     testImplementation("com.codeborne:selenide:6.9.0")
-    testImplementation("com.github.qky666:selenide-pom:0.13.0")
+    testImplementation("com.github.qky666:selenide-pom:0.13.1")
     testImplementation("org.apache.logging.log4j:log4j-core:$log4jVersion")
     testImplementation("org.apache.logging.log4j:log4j-slf4j2-impl:$log4jVersion")
     testImplementation("org.apache.logging.log4j:log4j-api-kotlin:1.2.0")
