@@ -1,4 +1,4 @@
-package pom
+package pom.common
 
 import com.codeborne.selenide.Condition.disappear
 import com.codeborne.selenide.Condition.text

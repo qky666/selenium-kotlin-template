@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 group = "es.mtp"
-version = "0.13.1"
+version = "0.13.3"
 
 repositories {
     mavenCentral()
@@ -19,7 +19,7 @@ dependencies {
     val log4jVersion = "2.19.0"
 
     testImplementation("com.codeborne:selenide:6.9.0")
-    testImplementation("com.github.qky666:selenide-pom:0.13.1")
+    testImplementation("com.github.qky666:selenide-pom:0.13.3")
     testImplementation("org.apache.logging.log4j:log4j-core:$log4jVersion")
     testImplementation("org.apache.logging.log4j:log4j-slf4j2-impl:$log4jVersion")
     testImplementation("org.apache.logging.log4j:log4j-api-kotlin:1.2.0")

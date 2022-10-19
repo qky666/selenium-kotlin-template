@@ -1,10 +1,10 @@
 package testng
 
 import com.codeborne.selenide.CollectionCondition.size
-import com.codeborne.selenide.Condition.visible
 import com.codeborne.selenide.Condition.disappear
-import com.codeborne.selenide.Condition.text
 import com.codeborne.selenide.Condition.exactText
+import com.codeborne.selenide.Condition.text
+import com.codeborne.selenide.Condition.visible
 import com.codeborne.selenide.Selenide
 import com.github.qky666.selenidepom.config.SPConfig
 import com.github.qky666.selenidepom.data.TestData
@@ -12,21 +12,17 @@ import com.github.qky666.selenidepom.pom.shouldLoadRequired
 import org.apache.logging.log4j.kotlin.Logging
 import org.testng.Assert
 import org.testng.ITestResult
-import org.testng.annotations.AfterMethod
-import org.testng.annotations.BeforeMethod
-import org.testng.annotations.Parameters
-import org.testng.annotations.Test
-import pom.mainFramePage
-import pom.searchresult.searchResultsPage
-import pom.servicesPage
+import org.testng.annotations.*
+import pom.pages.home.homePage
+import pom.pages.services.servicesPage
+import pom.searchresults.searchResultsPage
 import util.ReportHelper
 
 open class MtpKotlinTest : Logging {
 
     private var data = TestData("prod")
 
-    private val searchResultsExpected = 8
-    private val searchString = "Mexico"
+    private val maxResultsPerPageExpected = 5
 
     @BeforeMethod(description = "Open base URL in browser", alwaysRun = true)
     @Parameters("browser", "mobile", "env")
@@ -58,9 +54,10 @@ open class MtpKotlinTest : Logging {
         description = "User navigate to Quality Assurance (desktop)", groups = ["desktop"]
     )
     fun userNavigateToQualityAssuranceDesktop() {
-        mainFramePage.acceptCookies()
-        mainFramePage.mainMenu.services.hover()
-        mainFramePage.mainMenu.servicesPopUp.qualityAssurance.click()
+        homePage.shouldLoadRequired().acceptCookies()
+        homePage.shouldLoadRequired().mainBanner.verifyTextsEs()
+        homePage.mainMenu.services.hover()
+        homePage.mainMenu.servicesPopUp.qualityAssurance.click()
         servicesPage.shouldLoadRequired()
     }
 
@@ -68,9 +65,10 @@ open class MtpKotlinTest : Logging {
         description = "User navigate to Quality Assurance (mobile)", groups = ["mobile"]
     )
     fun userNavigateToQualityAssuranceMobile() {
-        mainFramePage.acceptCookies()
-        mainFramePage.mobileMenuButton.click()
-        val mobileMenu = mainFramePage.mobileMenu
+        homePage.shouldLoadRequired().acceptCookies()
+        homePage.shouldLoadRequired().mainBanner.verifyTextsEs()
+        homePage.mobileMenuButton.click()
+        val mobileMenu = homePage.mobileMenu
         mobileMenu.shouldLoadRequired().shouldBeCollapsed()
         mobileMenu.services.click()
         mobileMenu.servicesQualityAssurance.shouldBe(visible).click()
@@ -81,7 +79,8 @@ open class MtpKotlinTest : Logging {
         description = "Forced failure", groups = ["desktop", "mobile"]
     )
     fun forcedFailure() {
-        mainFramePage.acceptCookies()
+        homePage.shouldLoadRequired().acceptCookies()
+        homePage.shouldLoadRequired().mainBanner.verifyTextsEs()
         servicesPage.shouldLoadRequired()
     }
 
@@ -89,9 +88,10 @@ open class MtpKotlinTest : Logging {
         description = "Cookies should not reappear after accepted (desktop)", groups = ["desktop"]
     )
     fun userNavigateToQualityAssuranceCookiesShouldNotReappearDesktop() {
-        mainFramePage.acceptCookies()
-        mainFramePage.mainMenu.services.hover()
-        mainFramePage.mainMenu.servicesPopUp.qualityAssurance.click()
+        homePage.shouldLoadRequired().acceptCookies()
+        homePage.shouldLoadRequired().mainBanner.verifyTextsEs()
+        homePage.mainMenu.services.hover()
+        homePage.mainMenu.servicesPopUp.qualityAssurance.click()
         servicesPage.shouldLoadRequired().cookiesBanner.shouldNotBe(visible)
     }
 
@@ -99,9 +99,10 @@ open class MtpKotlinTest : Logging {
         description = "Cookies should not reappear after accepted (mobile)", groups = ["mobile"]
     )
     fun userNavigateToQualityAssuranceCookiesShouldNotReappearMobile() {
-        mainFramePage.acceptCookies()
-        mainFramePage.mobileMenuButton.click()
-        val mobileMenu = mainFramePage.mobileMenu
+        homePage.shouldLoadRequired().acceptCookies()
+        homePage.shouldLoadRequired().mainBanner.verifyTextsEs()
+        homePage.mobileMenuButton.click()
+        val mobileMenu = homePage.mobileMenu
         mobileMenu.shouldLoadRequired().shouldBeCollapsed()
         mobileMenu.services.click()
         mobileMenu.servicesQualityAssurance.shouldBe(visible).click()
@@ -109,21 +110,65 @@ open class MtpKotlinTest : Logging {
     }
 
     @Test(
-        description = "Search (desktop)", groups = ["desktop"]
+        description = "Search (desktop)", groups = ["desktop"], dataProvider = "searchData"
     )
-    fun search() {
-        mainFramePage.acceptCookies()
-        mainFramePage.mainMenu.searchOpen.click()
-        mainFramePage.mainMenu.searchMenu.shouldLoadRequired().searchInput.sendKeys(searchString)
-        mainFramePage.mainMenu.searchMenu.doSearch.click()
-        mainFramePage.mainMenu.searchMenu.should(disappear)
+    fun search(search: Search) {
+        homePage.shouldLoadRequired().acceptCookies()
+        homePage.shouldLoadRequired().mainBanner.verifyTextsEs()
+        homePage.mainMenu.searchOpen.click()
+        homePage.mainMenu.searchMenu.shouldLoadRequired().searchInput.sendKeys(search.search)
+        homePage.mainMenu.searchMenu.doSearch.click()
+        homePage.mainMenu.searchMenu.should(disappear)
 
-        searchResultsPage.shouldLoadRequired().breadcrumb.activeBreadcrumbItem.shouldHave(exactText("Results: $searchString"))
-        searchResultsPage.shouldLoadRequired().breadcrumb.breadcrumbItems[0].shouldHave(exactText("Home"))
-        Assert.assertEquals(searchResultsPage.searchResults.shouldLoadRequired().count(), searchResultsExpected)
-        val mtp25 = searchResultsPage.searchResults.filterBy(text("MTP, 25 años como empresa de referencia"))
-            .shouldHave(size(1))[0]
-        mtp25.title.shouldHave(exactText("MTP, 25 años como empresa de referencia en aseguramiento de negocios digitales"))
-        mtp25.text.shouldHave(text("MTP es hoy una empresa de referencia en Digital Business Assurance"))
+        searchResultsPage.shouldLoadRequired().breadcrumb.activeBreadcrumbItem.shouldHave(exactText("Results: ${search.search}"))
+        searchResultsPage.breadcrumb.breadcrumbItems[0].shouldHave(exactText("Home"))
+        Assert.assertEquals(searchResultsPage.searchResults.shouldLoadRequired().count(), maxResultsPerPageExpected)
+        searchResultsPage.pagination.shouldLoadRequired().currentPage.shouldHave(exactText("1"))
+        searchResultsPage.pagination.nextPage.shouldBe(visible)
+        searchResultsPage.pagination.pagesLinks.shouldHave(size(search.resultsPagesExpected))[search.resultsPagesExpected - 2].shouldHave(
+            exactText(search.resultsPagesExpected.toString())
+        )
+        searchResultsPage.pagination.pagesLinks.find(exactText(search.resultsPagesExpected.toString())).click()
+
+        searchResultsPage.shouldLoadRequired().pagination.shouldLoadRequired().currentPage.shouldHave(
+            exactText(
+                search.resultsPagesExpected.toString()
+            )
+        )
+        searchResultsPage.pagination.nextPage.should(disappear)
+        searchResultsPage.pagination.previousPage.shouldBe(visible)
+        Assert.assertEquals(
+            searchResultsPage.searchResults.shouldLoadRequired().count(), search.lastPageResultsExpected
+        )
+        val result = searchResultsPage.searchResults.filterBy(text(search.lastPageResultTitle)).shouldHave(size(1))[0]
+        result.title.shouldHave(exactText(search.lastPageResultTitle))
+        result.text.shouldHave(text(search.lastPageResultText))
     }
+
+    @DataProvider(parallel = true)
+    fun searchData(): Array<Search> {
+        return arrayOf(
+            Search(
+                "Mexico",
+                2,
+                3,
+                "MTP, 25 años como empresa de referencia en aseguramiento de negocios digitales",
+                "MTP es hoy una empresa de referencia en Digital Business Assurance"
+            ), Search(
+                "Viajero",
+                2,
+                2,
+                "Los valores MTP, claves para este 2020",
+                "Este año 2020 ha sido un año particular y totalmente atípico para todos"
+            )
+        )
+    }
+
+    data class Search(
+        val search: String,
+        val resultsPagesExpected: Int,
+        val lastPageResultsExpected: Int,
+        val lastPageResultTitle: String,
+        val lastPageResultText: String
+    )
 }

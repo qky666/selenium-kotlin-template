@@ -1,6 +1,6 @@
 @file:Suppress("MemberVisibilityCanBePrivate")
 
-package pom.menu.mobile
+package pom.common
 
 import com.codeborne.selenide.CollectionCondition.allMatch
 import com.codeborne.selenide.Condition.text

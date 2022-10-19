@@ -1,8 +1,9 @@
-package pom
+package pom.pages.services
 
 import com.codeborne.selenide.Condition.text
 import com.codeborne.selenide.Selenide.element
 import com.github.qky666.selenidepom.pom.Required
+import pom.common.MainFramePage
 import java.time.Duration
 
 class ServicesPage : MainFramePage() {
