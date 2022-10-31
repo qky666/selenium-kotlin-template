@@ -12,8 +12,13 @@ import com.github.qky666.selenidepom.pom.shouldLoadRequired
 import org.apache.logging.log4j.kotlin.Logging
 import org.testng.Assert
 import org.testng.ITestResult
-import org.testng.annotations.*
+import org.testng.annotations.AfterMethod
+import org.testng.annotations.BeforeMethod
+import org.testng.annotations.DataProvider
+import org.testng.annotations.Parameters
+import org.testng.annotations.Test
 import pom.pages.home.homePage
+import pom.pages.services.qualityAssurancePage
 import pom.pages.services.servicesPage
 import pom.searchresults.searchResultsPage
 import util.ReportHelper
@@ -53,118 +58,164 @@ open class MtpKotlinTest : Logging {
     @Test(
         description = "User navigate to Quality Assurance (desktop)", groups = ["desktop"]
     )
-    fun userNavigateToQualityAssuranceDesktop() {
+    @Parameters("lang")
+    fun userNavigateToQualityAssuranceDesktop(lang: String) {
+        if (lang.contentEquals("en", ignoreCase = true)) {
+            homePage.shouldLoadRequired().desktopMenu.langEn.click()
+            SPConfig.lang = "en"
+        }
         homePage.shouldLoadRequired().acceptCookies()
-        homePage.shouldLoadRequired().mainBanner.verifyTextsEs()
-        homePage.mainMenu.services.hover()
-        homePage.mainMenu.servicesPopUp.qualityAssurance.click()
-        servicesPage.shouldLoadRequired()
+        homePage.desktopMenu.services.hover()
+        homePage.desktopMenu.servicesPopUp.qualityAssurance.click()
+        qualityAssurancePage.shouldLoadRequired()
     }
 
     @Test(
         description = "User navigate to Quality Assurance (mobile)", groups = ["mobile"]
     )
-    fun userNavigateToQualityAssuranceMobile() {
+    @Parameters("lang")
+    fun userNavigateToQualityAssuranceMobile(lang: String) {
+        if (lang.contentEquals("en", ignoreCase = true)) {
+            homePage.shouldLoadRequired().mobileMenu.langEn.click()
+            SPConfig.lang = "en"
+        }
         homePage.shouldLoadRequired().acceptCookies()
-        homePage.shouldLoadRequired().mainBanner.verifyTextsEs()
-        homePage.mobileMenuButton.click()
-        val mobileMenu = homePage.mobileMenu
+        homePage.mobileMenu.mobileMenuButton.click()
+        val mobileMenu = homePage.mobileMenuPopUp
         mobileMenu.shouldLoadRequired().shouldBeCollapsed()
-        mobileMenu.services.click()
-        mobileMenu.servicesQualityAssurance.shouldBe(visible).click()
-        servicesPage.shouldLoadRequired()
+        mobileMenu.services().click()
+        mobileMenu.servicesQualityAssurance().shouldBe(visible).click()
+        qualityAssurancePage.shouldLoadRequired()
     }
 
     @Test(
         description = "Forced failure", groups = ["desktop", "mobile"]
     )
-    fun forcedFailure() {
+    @Parameters("mobile", "lang")
+    fun forcedFailure(mobile: Boolean, lang: String) {
+        if (mobile and lang.contentEquals("en", ignoreCase = true)) {
+            homePage.shouldLoadRequired().mobileMenu.langEn.click()
+            SPConfig.lang = "en"
+        } else if (lang.contentEquals("en", ignoreCase = true)) {
+            homePage.shouldLoadRequired().desktopMenu.langEn.click()
+            SPConfig.lang = "en"
+        }
         homePage.shouldLoadRequired().acceptCookies()
-        homePage.shouldLoadRequired().mainBanner.verifyTextsEs()
         servicesPage.shouldLoadRequired()
     }
 
     @Test(
         description = "Cookies should not reappear after accepted (desktop)", groups = ["desktop"]
     )
-    fun userNavigateToQualityAssuranceCookiesShouldNotReappearDesktop() {
+    @Parameters("lang")
+    fun userNavigateToQualityAssuranceCookiesShouldNotReappearDesktop(lang: String) {
+        if (lang.contentEquals("en", ignoreCase = true)) {
+            homePage.shouldLoadRequired().desktopMenu.langEn.click()
+            SPConfig.lang = "en"
+        }
         homePage.shouldLoadRequired().acceptCookies()
-        homePage.shouldLoadRequired().mainBanner.verifyTextsEs()
-        homePage.mainMenu.services.hover()
-        homePage.mainMenu.servicesPopUp.qualityAssurance.click()
-        servicesPage.shouldLoadRequired().cookiesBanner.shouldNotBe(visible)
+        homePage.desktopMenu.services.hover()
+        homePage.desktopMenu.servicesPopUp.qualityAssurance.click()
+        qualityAssurancePage.shouldLoadRequired().cookiesBanner.shouldNotBe(visible)
     }
 
     @Test(
         description = "Cookies should not reappear after accepted (mobile)", groups = ["mobile"]
     )
-    fun userNavigateToQualityAssuranceCookiesShouldNotReappearMobile() {
+    @Parameters("lang")
+    fun userNavigateToQualityAssuranceCookiesShouldNotReappearMobile(lang: String) {
+        if (lang.contentEquals("en", ignoreCase = true)) {
+            homePage.shouldLoadRequired().mobileMenu.langEn.click()
+            SPConfig.lang = "en"
+        }
         homePage.shouldLoadRequired().acceptCookies()
-        homePage.shouldLoadRequired().mainBanner.verifyTextsEs()
-        homePage.mobileMenuButton.click()
-        val mobileMenu = homePage.mobileMenu
+        homePage.mobileMenu.mobileMenuButton.click()
+        val mobileMenu = homePage.mobileMenuPopUp
         mobileMenu.shouldLoadRequired().shouldBeCollapsed()
-        mobileMenu.services.click()
-        mobileMenu.servicesQualityAssurance.shouldBe(visible).click()
-        servicesPage.shouldLoadRequired().cookiesBanner.shouldNotBe(visible)
+        mobileMenu.services().click()
+        mobileMenu.servicesQualityAssurance().shouldBe(visible).click()
+        qualityAssurancePage.shouldLoadRequired().cookiesBanner.shouldNotBe(visible)
     }
 
     @Test(
         description = "Search (desktop)", groups = ["desktop"], dataProvider = "searchData"
     )
     fun search(search: Search) {
+        if (search.lang.contentEquals("en", ignoreCase = true)) {
+            homePage.shouldLoadRequired().desktopMenu.langEn.click()
+            SPConfig.lang = "en"
+        }
         homePage.shouldLoadRequired().acceptCookies()
-        homePage.shouldLoadRequired().mainBanner.verifyTextsEs()
-        homePage.mainMenu.searchOpen.click()
-        homePage.mainMenu.searchMenu.shouldLoadRequired().searchInput.sendKeys(search.search)
-        homePage.mainMenu.searchMenu.doSearch.click()
-        homePage.mainMenu.searchMenu.should(disappear)
+        homePage.desktopMenu.searchOpen.click()
+        homePage.desktopMenu.searchMenu.shouldLoadRequired().searchInput.sendKeys(search.search)
+        homePage.desktopMenu.searchMenu.doSearch.click()
+        homePage.desktopMenu.searchMenu.should(disappear)
 
         searchResultsPage.shouldLoadRequired().breadcrumb.activeBreadcrumbItem.shouldHave(exactText("Results: ${search.search}"))
         searchResultsPage.breadcrumb.breadcrumbItems[0].shouldHave(exactText("Home"))
         Assert.assertEquals(searchResultsPage.searchResults.shouldLoadRequired().count(), maxResultsPerPageExpected)
-        searchResultsPage.pagination.shouldLoadRequired().currentPage.shouldHave(exactText("1"))
-        searchResultsPage.pagination.nextPage.shouldBe(visible)
-        searchResultsPage.pagination.pagesLinks.shouldHave(size(search.resultsPagesExpected))[search.resultsPagesExpected - 2].shouldHave(
-            exactText(search.resultsPagesExpected.toString())
-        )
-        searchResultsPage.pagination.pagesLinks.find(exactText(search.resultsPagesExpected.toString())).click()
-
-        searchResultsPage.shouldLoadRequired().pagination.shouldLoadRequired().currentPage.shouldHave(
-            exactText(
-                search.resultsPagesExpected.toString()
+        if (search.resultsPagesExpected > 1) {
+            searchResultsPage.pagination.shouldLoadRequired().currentPage.shouldHave(exactText("1"))
+            searchResultsPage.pagination.nextPage.shouldBe(visible)
+            searchResultsPage.pagination.pagesLinks.shouldHave(size(search.resultsPagesExpected))[search.resultsPagesExpected - 2].shouldHave(
+                exactText(search.resultsPagesExpected.toString())
             )
-        )
-        searchResultsPage.pagination.nextPage.should(disappear)
-        searchResultsPage.pagination.previousPage.shouldBe(visible)
+            searchResultsPage.pagination.pagesLinks.find(exactText(search.resultsPagesExpected.toString())).click()
+
+            searchResultsPage.shouldLoadRequired().pagination.shouldLoadRequired().currentPage.shouldHave(
+                exactText(
+                    search.resultsPagesExpected.toString()
+                )
+            )
+            searchResultsPage.pagination.nextPage.should(disappear)
+            searchResultsPage.pagination.previousPage.shouldBe(visible)
+        } else {
+            searchResultsPage.pagination.shouldNotBe(visible)
+        }
         Assert.assertEquals(
             searchResultsPage.searchResults.shouldLoadRequired().count(), search.lastPageResultsExpected
         )
         val result = searchResultsPage.searchResults.filterBy(text(search.lastPageResultTitle)).shouldHave(size(1))[0]
         result.title.shouldHave(exactText(search.lastPageResultTitle))
-        result.text.shouldHave(text(search.lastPageResultText))
+        if (search.lastPageResultText.isNotEmpty()) {
+            result.text.shouldHave(text(search.lastPageResultText))
+        } else {
+            result.text.shouldNotBe(visible)
+        }
     }
 
     @DataProvider(parallel = true)
     fun searchData(): Array<Search> {
         return arrayOf(
             Search(
+                "es",
                 "Mexico",
                 2,
                 3,
                 "MTP, 25 años como empresa de referencia en aseguramiento de negocios digitales",
-                "MTP es hoy una empresa de referencia en Digital Business Assurance"
-            ), Search(
+                "MTP es hoy una empresa de referencia en Digital Business Assurance",
+            ),
+            Search(
+                "es",
                 "Viajero",
                 2,
                 2,
                 "Los valores MTP, claves para este 2020",
-                "Este año 2020 ha sido un año particular y totalmente atípico para todos"
+                "Este año 2020 ha sido un año particular y totalmente atípico para todos",
+            ),
+            Search(
+                "en",
+                "Mexico",
+                1,
+                5,
+                "Contact us",
+                "",
             )
         )
     }
 
     data class Search(
+        val lang: String,
         val search: String,
         val resultsPagesExpected: Int,
         val lastPageResultsExpected: Int,
