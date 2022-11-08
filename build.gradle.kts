@@ -28,7 +28,7 @@ dependencies {
 }
 
 allure {
-    version.set("2.18.1")
+    version.set("2.20.0")
 }
 
 tasks.test {
