@@ -1,15 +1,23 @@
 package pom.pages.home
 
 import com.codeborne.selenide.Condition
+import com.codeborne.selenide.Selenide
 import com.codeborne.selenide.Selenide.element
 import com.codeborne.selenide.SelenideElement
+import com.github.qky666.selenidepom.data.TestData
 import com.github.qky666.selenidepom.pom.ConditionedElement
 import com.github.qky666.selenidepom.pom.Required
 import com.github.qky666.selenidepom.pom.Widget
+import com.github.qky666.selenidepom.pom.shouldLoadRequired
 import pom.common.MainFramePage
 
 class HomePage : MainFramePage() {
     @Required val mainBanner = MainBannerWidget(element("div.custom-bg-primary"))
+
+    fun open() {
+        Selenide.open(TestData.input.getProperty("data.input.baseUrl"))
+        shouldLoadRequired(lang = "es")
+    }
 }
 
 class MainBannerWidget(self: SelenideElement) : Widget(self) {

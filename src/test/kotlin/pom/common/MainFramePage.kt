@@ -6,8 +6,9 @@ import com.github.qky666.selenidepom.config.SPConfig
 import com.github.qky666.selenidepom.pom.Page
 import com.github.qky666.selenidepom.pom.Required
 import com.github.qky666.selenidepom.pom.shouldLoadRequired
+import org.apache.logging.log4j.kotlin.Logging
 
-open class MainFramePage : Page() {
+open class MainFramePage : Page(), Logging {
     @Required val home = element("a.img-menu")
     @Required(model = "desktop") val desktopMenu = DesktopMenuWidget(element("nav.menu-pc"))
     @Required(model = "mobile") val mobileMenu = MobileMenuWidget(element("div.menu-movil"))
@@ -24,6 +25,7 @@ open class MainFramePage : Page() {
         } else {
             acceptCookiesDesktop()
         }
+        logger.info { "Cookies accepted" }
     }
 
     private fun acceptCookiesDesktop() {
@@ -37,6 +39,24 @@ open class MainFramePage : Page() {
         shouldLoadRequired().mobileMenu.mobileMenuButton.click()
         cookiesBanner.acceptCookies()
         shouldLoadRequired()
+    }
+
+    fun setLangIfNeeded(lang: String = SPConfig.lang) {
+        if (SPConfig.model == "mobile" && !mobileMenu.selectedLang.text.contentEquals(lang, true)) {
+            if (lang.contentEquals("en", ignoreCase = true)) {
+                mobileMenu.langEn.click()
+            } else {
+                mobileMenu.langEs.click()
+            }
+        } else if (SPConfig.model != "mobile" && !desktopMenu.selectedLang.text.contentEquals(lang, true)) {
+            if (lang.contentEquals("en", ignoreCase = true)) {
+                desktopMenu.langEn.click()
+            } else {
+                desktopMenu.langEs.click()
+            }
+        }
+        shouldLoadRequired(lang = lang)
+        logger.info { "Set site language: $lang" }
     }
 }
 

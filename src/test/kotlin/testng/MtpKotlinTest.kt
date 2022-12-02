@@ -25,25 +25,19 @@ import util.ReportHelper
 
 open class MtpKotlinTest : Logging {
 
-    private var data = TestData("prod")
-
     private val maxResultsPerPageExpected = 5
 
     @BeforeMethod(description = "Open base URL in browser", alwaysRun = true)
     @Parameters("browser", "mobile", "env")
     fun beforeMethod(browser: String, mobile: String, env: String) {
         // Set env
-        data.resetData(env)
-        val baseUrl = data.input.getProperty("data.input.baseUrl")
+        TestData.init(env)
         // Configure webdriver
         if (mobile.equals("true", true)) {
             SPConfig.setupBasicMobileBrowser()
         } else {
             SPConfig.setupBasicDesktopBrowser(browser)
         }
-        // Open URL
-        Selenide.open(baseUrl)
-        logger.info { "URL opened. Browser: $browser. Mobile: $mobile" }
     }
 
     @AfterMethod(description = "Close browser", alwaysRun = true)
