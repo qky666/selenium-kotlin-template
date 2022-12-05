@@ -14,7 +14,6 @@ import org.testng.Assert
 import org.testng.ITestResult
 import org.testng.annotations.AfterMethod
 import org.testng.annotations.BeforeMethod
-import org.testng.annotations.DataProvider
 import org.testng.annotations.Parameters
 import org.testng.annotations.Test
 import pom.pages.home.homePage
@@ -28,16 +27,23 @@ open class MtpKotlinTest : Logging {
     private val maxResultsPerPageExpected = 5
 
     @BeforeMethod(description = "Open base URL in browser", alwaysRun = true)
-    @Parameters("browser", "mobile", "env")
-    fun beforeMethod(browser: String, mobile: String, env: String) {
-        // Set env
-        TestData.init(env)
+    @Parameters("browser", "mobile", "env", "lang")
+    fun beforeMethod(browser: String, mobile: String, env: String, lang: String) {
         // Configure webdriver
         if (mobile.equals("true", true)) {
             SPConfig.setupBasicMobileBrowser()
         } else {
             SPConfig.setupBasicDesktopBrowser(browser)
         }
+
+        // Set env
+        TestData.init(env)
+
+        // Open URL and set up site
+        homePage.open()
+        SPConfig.lang = lang
+        homePage.setLangIfNeeded()
+        homePage.acceptCookies()
     }
 
     @AfterMethod(description = "Close browser", alwaysRun = true)
@@ -52,13 +58,7 @@ open class MtpKotlinTest : Logging {
     @Test(
         description = "User navigate to Quality Assurance (desktop)", groups = ["desktop"]
     )
-    @Parameters("lang")
-    fun userNavigateToQualityAssuranceDesktop(lang: String) {
-        if (lang.contentEquals("en", ignoreCase = true)) {
-            homePage.shouldLoadRequired().desktopMenu.langEn.click()
-            SPConfig.lang = "en"
-        }
-        homePage.shouldLoadRequired().acceptCookies()
+    fun userNavigateToQualityAssuranceDesktop() {
         homePage.desktopMenu.services.hover()
         homePage.desktopMenu.servicesPopUp.qualityAssurance.click()
         qualityAssurancePage.shouldLoadRequired()
@@ -67,13 +67,7 @@ open class MtpKotlinTest : Logging {
     @Test(
         description = "User navigate to Quality Assurance (mobile)", groups = ["mobile"]
     )
-    @Parameters("lang")
-    fun userNavigateToQualityAssuranceMobile(lang: String) {
-        if (lang.contentEquals("en", ignoreCase = true)) {
-            homePage.shouldLoadRequired().mobileMenu.langEn.click()
-            SPConfig.lang = "en"
-        }
-        homePage.shouldLoadRequired().acceptCookies()
+    fun userNavigateToQualityAssuranceMobile() {
         homePage.mobileMenu.mobileMenuButton.click()
         val mobileMenu = homePage.mobileMenuPopUp
         mobileMenu.shouldLoadRequired().shouldBeCollapsed()
@@ -85,29 +79,14 @@ open class MtpKotlinTest : Logging {
     @Test(
         description = "Forced failure", groups = ["desktop", "mobile"]
     )
-    @Parameters("mobile", "lang")
-    fun forcedFailure(mobile: Boolean, lang: String) {
-        if (mobile and lang.contentEquals("en", ignoreCase = true)) {
-            homePage.shouldLoadRequired().mobileMenu.langEn.click()
-            SPConfig.lang = "en"
-        } else if (lang.contentEquals("en", ignoreCase = true)) {
-            homePage.shouldLoadRequired().desktopMenu.langEn.click()
-            SPConfig.lang = "en"
-        }
-        homePage.shouldLoadRequired().acceptCookies()
+    fun forcedFailure() {
         servicesPage.shouldLoadRequired()
     }
 
     @Test(
         description = "Cookies should not reappear after accepted (desktop)", groups = ["desktop"]
     )
-    @Parameters("lang")
-    fun userNavigateToQualityAssuranceCookiesShouldNotReappearDesktop(lang: String) {
-        if (lang.contentEquals("en", ignoreCase = true)) {
-            homePage.shouldLoadRequired().desktopMenu.langEn.click()
-            SPConfig.lang = "en"
-        }
-        homePage.shouldLoadRequired().acceptCookies()
+    fun userNavigateToQualityAssuranceCookiesShouldNotReappearDesktop() {
         homePage.desktopMenu.services.hover()
         homePage.desktopMenu.servicesPopUp.qualityAssurance.click()
         qualityAssurancePage.shouldLoadRequired().cookiesBanner.shouldNotBe(visible)
@@ -116,13 +95,7 @@ open class MtpKotlinTest : Logging {
     @Test(
         description = "Cookies should not reappear after accepted (mobile)", groups = ["mobile"]
     )
-    @Parameters("lang")
-    fun userNavigateToQualityAssuranceCookiesShouldNotReappearMobile(lang: String) {
-        if (lang.contentEquals("en", ignoreCase = true)) {
-            homePage.shouldLoadRequired().mobileMenu.langEn.click()
-            SPConfig.lang = "en"
-        }
-        homePage.shouldLoadRequired().acceptCookies()
+    fun userNavigateToQualityAssuranceCookiesShouldNotReappearMobile() {
         homePage.mobileMenu.mobileMenuButton.click()
         val mobileMenu = homePage.mobileMenuPopUp
         mobileMenu.shouldLoadRequired().shouldBeCollapsed()
@@ -131,35 +104,35 @@ open class MtpKotlinTest : Logging {
         qualityAssurancePage.shouldLoadRequired().cookiesBanner.shouldNotBe(visible)
     }
 
-    @Test(
-        description = "Search (desktop)", groups = ["desktop"], dataProvider = "searchData"
+    @Test(description = "Search (desktop)", groups = ["desktop.search"])
+    @Parameters(
+        "search", "resultsPagesExpected", "lastPageResultsExpected", "lastPageResultTitle", "lastPageResultText"
     )
-    fun search(search: Search) {
-        if (search.lang.contentEquals("en", ignoreCase = true)) {
-            homePage.shouldLoadRequired().desktopMenu.langEn.click()
-            SPConfig.lang = "en"
-        }
-        homePage.shouldLoadRequired().acceptCookies()
+    fun search(
+        search: String,
+        resultsPagesExpected: String,
+        lastPageResultsExpected: String,
+        lastPageResultTitle: String,
+        lastPageResultText: String
+    ) {
         homePage.desktopMenu.searchOpen.click()
-        homePage.desktopMenu.searchMenu.shouldLoadRequired().searchInput.sendKeys(search.search)
+        homePage.desktopMenu.searchMenu.shouldLoadRequired().searchInput.sendKeys(search)
         homePage.desktopMenu.searchMenu.doSearch.click()
         homePage.desktopMenu.searchMenu.should(disappear)
 
-        searchResultsPage.shouldLoadRequired().breadcrumb.activeBreadcrumbItem.shouldHave(exactText("Results: ${search.search}"))
+        searchResultsPage.shouldLoadRequired().breadcrumb.activeBreadcrumbItem.shouldHave(exactText("Results: $search"))
         searchResultsPage.breadcrumb.breadcrumbItems[0].shouldHave(exactText("Home"))
         Assert.assertEquals(searchResultsPage.searchResults.shouldLoadRequired().count(), maxResultsPerPageExpected)
-        if (search.resultsPagesExpected > 1) {
+        if (resultsPagesExpected.toInt() > 1) {
             searchResultsPage.pagination.shouldLoadRequired().currentPage.shouldHave(exactText("1"))
             searchResultsPage.pagination.nextPage.shouldBe(visible)
-            searchResultsPage.pagination.pagesLinks.shouldHave(size(search.resultsPagesExpected))[search.resultsPagesExpected - 2].shouldHave(
-                exactText(search.resultsPagesExpected.toString())
+            searchResultsPage.pagination.pagesLinks.shouldHave(size(resultsPagesExpected.toInt()))[resultsPagesExpected.toInt() - 2].shouldHave(
+                exactText(resultsPagesExpected)
             )
-            searchResultsPage.pagination.pagesLinks.find(exactText(search.resultsPagesExpected.toString())).click()
+            searchResultsPage.pagination.pagesLinks.find(exactText(resultsPagesExpected)).click()
 
             searchResultsPage.shouldLoadRequired().pagination.shouldLoadRequired().currentPage.shouldHave(
-                exactText(
-                    search.resultsPagesExpected.toString()
-                )
+                exactText(resultsPagesExpected)
             )
             searchResultsPage.pagination.nextPage.should(disappear)
             searchResultsPage.pagination.previousPage.shouldBe(visible)
@@ -167,53 +140,14 @@ open class MtpKotlinTest : Logging {
             searchResultsPage.pagination.shouldNotBe(visible)
         }
         Assert.assertEquals(
-            searchResultsPage.searchResults.shouldLoadRequired().count(), search.lastPageResultsExpected
+            searchResultsPage.searchResults.shouldLoadRequired().count(), lastPageResultsExpected.toInt()
         )
-        val result = searchResultsPage.searchResults.filterBy(text(search.lastPageResultTitle)).shouldHave(size(1))[0]
-        result.title.shouldHave(exactText(search.lastPageResultTitle))
-        if (search.lastPageResultText.isNotEmpty()) {
-            result.text.shouldHave(text(search.lastPageResultText))
+        val result = searchResultsPage.searchResults.filterBy(text(lastPageResultTitle)).shouldHave(size(1))[0]
+        result.title.shouldHave(exactText(lastPageResultTitle))
+        if (lastPageResultText.isNotEmpty()) {
+            result.text.shouldHave(text(lastPageResultText))
         } else {
             result.text.shouldNotBe(visible)
         }
     }
-
-    @DataProvider(parallel = true)
-    fun searchData(): Array<Search> {
-        return arrayOf(
-            Search(
-                "es",
-                "Mexico",
-                2,
-                3,
-                "MTP, 25 años como empresa de referencia en aseguramiento de negocios digitales",
-                "MTP es hoy una empresa de referencia en Digital Business Assurance",
-            ),
-            Search(
-                "es",
-                "Viajero",
-                2,
-                2,
-                "Los valores MTP, claves para este 2020",
-                "Este año 2020 ha sido un año particular y totalmente atípico para todos",
-            ),
-            Search(
-                "en",
-                "Mexico",
-                1,
-                5,
-                "Contact us",
-                "",
-            )
-        )
-    }
-
-    data class Search(
-        val lang: String,
-        val search: String,
-        val resultsPagesExpected: Int,
-        val lastPageResultsExpected: Int,
-        val lastPageResultTitle: String,
-        val lastPageResultText: String
-    )
 }

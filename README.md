@@ -32,8 +32,5 @@ Selenide: https://selenide.org/index.html
 Selenide-POM: https://github.com/qky666/selenide-pom
 
 ## TODO
-- Test data: 
-  - Input data. Simple solution: Properties
-  - Output data.
 - Cloud: LambdaTest
 - CI/CD: Azure Devops
