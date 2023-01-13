@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "selenium-kotlin-template"
-version = "0.15.0"
+version = "0.15.1"
 description = "Python support for selenium-kotling-template"
 authors = ["José Torrecilla Álvarez <qky669@gmail.com>"]
 
