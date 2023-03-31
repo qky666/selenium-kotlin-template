@@ -49,9 +49,12 @@ open class MtpKotlinTest : Logging {
 
     @AfterMethod(description = "Close browser", alwaysRun = true)
     fun afterMethod(result: ITestResult) {
+        // Attach screenshot
         if (result.status != ITestResult.SUCCESS) {
             ReportHelper.attachScreenshot("Test failed screenshot")
         }
+
+        // Quit webdriver
         SPConfig.quitCurrentThreadDriver()
         logger.info { "Closed webdriver for test ${result.name}. Status: ${result.status}" }
     }
