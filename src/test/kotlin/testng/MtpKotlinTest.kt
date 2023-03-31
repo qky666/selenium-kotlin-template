@@ -5,7 +5,6 @@ import com.codeborne.selenide.Condition.disappear
 import com.codeborne.selenide.Condition.exactText
 import com.codeborne.selenide.Condition.text
 import com.codeborne.selenide.Condition.visible
-import com.codeborne.selenide.Selenide
 import com.github.qky666.selenidepom.config.SPConfig
 import com.github.qky666.selenidepom.data.TestData
 import com.github.qky666.selenidepom.pom.shouldLoadRequired
@@ -53,7 +52,7 @@ open class MtpKotlinTest : Logging {
         if (result.status != ITestResult.SUCCESS) {
             ReportHelper.attachScreenshot("Test failed screenshot")
         }
-        Selenide.closeWebDriver()
+        SPConfig.quitCurrentThreadDriver()
         logger.info { "Closed webdriver for test ${result.name}. Status: ${result.status}" }
     }
 
