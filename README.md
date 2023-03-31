@@ -7,10 +7,8 @@ Documentation: https://kotlinlang.org/
 
 Installed with IntelliJ IDEA 
 
-### Poetry
-Documentation: https://python-poetry.org/ 
-
-Install: https://python-poetry.org/docs/master/#installing-with-the-official-installer
+### Python
+Documentation: https://www.python.org/
 
 Required by allure-combine.
 
@@ -32,5 +30,5 @@ Selenide: https://selenide.org/index.html
 Selenide-POM: https://github.com/qky666/selenide-pom
 
 ## TODO
-- Cloud: LambdaTest
+- Cloud: HeadSpin
 - CI/CD: Azure Devops
