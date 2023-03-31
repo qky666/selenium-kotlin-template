@@ -30,11 +30,13 @@ open class MtpKotlinTest : Logging {
     @Parameters("browser", "mobile", "env", "lang")
     fun beforeMethod(browser: String, mobile: String, env: String, lang: String) {
         // Configure webdriver
+        SPConfig.resetConfig()
         if (mobile.equals("true", true)) {
             SPConfig.setupBasicMobileBrowser()
         } else {
             SPConfig.setupBasicDesktopBrowser(browser)
         }
+        SPConfig.setCurrentThreadDriver()
 
         // Set env
         TestData.init(env)
@@ -56,7 +58,8 @@ open class MtpKotlinTest : Logging {
     }
 
     @Test(
-        description = "User navigate to Quality Assurance (desktop)", groups = ["desktop"]
+        description = "User navigate to Quality Assurance (desktop)",
+        groups = ["desktop"]
     )
     fun userNavigateToQualityAssuranceDesktop() {
         homePage.desktopMenu.services.hover()
@@ -65,7 +68,8 @@ open class MtpKotlinTest : Logging {
     }
 
     @Test(
-        description = "User navigate to Quality Assurance (mobile)", groups = ["mobile"]
+        description = "User navigate to Quality Assurance (mobile)",
+        groups = ["mobile"]
     )
     fun userNavigateToQualityAssuranceMobile() {
         homePage.mobileMenu.mobileMenuButton.click()
@@ -77,14 +81,16 @@ open class MtpKotlinTest : Logging {
     }
 
     @Test(
-        description = "Forced failure", groups = ["desktop", "mobile"]
+        description = "Forced failure",
+        groups = ["desktop", "mobile"]
     )
     fun forcedFailure() {
         servicesPage.shouldLoadRequired()
     }
 
     @Test(
-        description = "Cookies should not reappear after accepted (desktop)", groups = ["desktop"]
+        description = "Cookies should not reappear after accepted (desktop)",
+        groups = ["desktop"]
     )
     fun userNavigateToQualityAssuranceCookiesShouldNotReappearDesktop() {
         homePage.desktopMenu.services.hover()
@@ -93,7 +99,8 @@ open class MtpKotlinTest : Logging {
     }
 
     @Test(
-        description = "Cookies should not reappear after accepted (mobile)", groups = ["mobile"]
+        description = "Cookies should not reappear after accepted (mobile)",
+        groups = ["mobile"]
     )
     fun userNavigateToQualityAssuranceCookiesShouldNotReappearMobile() {
         homePage.mobileMenu.mobileMenuButton.click()
@@ -106,7 +113,11 @@ open class MtpKotlinTest : Logging {
 
     @Test(description = "Search (desktop)", groups = ["desktop.search"])
     @Parameters(
-        "search", "resultsPagesExpected", "lastPageResultsExpected", "lastPageResultTitle", "lastPageResultText"
+        "search",
+        "resultsPagesExpected",
+        "lastPageResultsExpected",
+        "lastPageResultTitle",
+        "lastPageResultText"
     )
     fun search(
         search: String,
@@ -140,7 +151,8 @@ open class MtpKotlinTest : Logging {
             searchResultsPage.pagination.shouldNotBe(visible)
         }
         Assert.assertEquals(
-            searchResultsPage.searchResults.shouldLoadRequired().count(), lastPageResultsExpected.toInt()
+            searchResultsPage.searchResults.shouldLoadRequired().count(),
+            lastPageResultsExpected.toInt()
         )
         val result = searchResultsPage.searchResults.filterBy(text(lastPageResultTitle)).shouldHave(size(1))[0]
         result.title.shouldHave(exactText(lastPageResultTitle))

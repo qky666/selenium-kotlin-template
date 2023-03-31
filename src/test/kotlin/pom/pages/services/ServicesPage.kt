@@ -6,6 +6,7 @@ import pom.common.MainFramePage
 
 open class ServicesPage : MainFramePage() {
     @Required val principal = element("div.servicios-principal")
+
     @Required open val title = principal.find("h1.h2")
 }
 
