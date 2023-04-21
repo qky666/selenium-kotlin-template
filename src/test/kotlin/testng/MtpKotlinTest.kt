@@ -29,7 +29,6 @@ open class MtpKotlinTest : Logging {
     @Parameters("browser", "mobile", "env", "lang")
     fun beforeMethod(browser: String, mobile: String, env: String, lang: String) {
         // Configure webdriver
-        SPConfig.resetConfig()
         if (mobile.equals("true", true)) {
             SPConfig.setupBasicMobileBrowser()
         } else {
