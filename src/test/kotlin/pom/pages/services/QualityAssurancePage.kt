@@ -1,15 +1,14 @@
 package pom.pages.services
 
-import com.codeborne.selenide.Condition.exactText
-import com.github.qky666.selenidepom.pom.ConditionedElement
+import com.github.qky666.selenidepom.pom.LangConditionedElement
 import com.github.qky666.selenidepom.pom.Required
 
 class QualityAssurancePage : ServicesPage() {
-    @Required override val title = ConditionedElement(
+    @Required override val title = LangConditionedElement(
         super.title,
         mapOf(
-            "es" to exactText("Aseguramiento de la calidad"),
-            "en" to exactText("Quality assurance")
+            "es" to "Aseguramiento de la calidad",
+            "en" to "Quality assurance"
         )
     )
 }
