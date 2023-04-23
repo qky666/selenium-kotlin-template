@@ -1,7 +1,7 @@
 import ru.vyarus.gradle.plugin.python.task.PythonTask
 
 group = "es.mtp"
-version = "0.17.0"
+version = "0.17.1"
 
 repositories {
     mavenCentral()
@@ -21,8 +21,8 @@ dependencies {
     val log4jVersion = "2.20.0"
 
     testImplementation("org.testng:testng:7.7.1")
-    testImplementation("com.codeborne:selenide:6.13.0")
-    testImplementation("com.github.qky666:selenide-pom:0.17.0")
+    testImplementation("com.codeborne:selenide:6.13.1")
+    testImplementation("com.github.qky666:selenide-pom:0.17.1")
     testImplementation("org.apache.logging.log4j:log4j-core:$log4jVersion")
     testImplementation("org.apache.logging.log4j:log4j-slf4j2-impl:$log4jVersion")
     testImplementation("org.apache.logging.log4j:log4j-api-kotlin:1.2.0")
