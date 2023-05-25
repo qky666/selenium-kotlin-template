@@ -1,6 +1,6 @@
 import ru.vyarus.gradle.plugin.python.task.PythonTask
 
-group = "es.mtp"
+group = "com.github.qky666"
 version = "0.18.3"
 
 repositories {
