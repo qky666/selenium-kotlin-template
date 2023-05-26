@@ -1,7 +1,7 @@
 import ru.vyarus.gradle.plugin.python.task.PythonTask
 
 group = "com.github.qky666"
-version = "0.18.3"
+version = "0.18.4"
 
 repositories {
     mavenCentral()
@@ -9,7 +9,7 @@ repositories {
 }
 
 plugins {
-    kotlin("jvm") version "1.8.20"
+    kotlin("jvm") version "1.8.21"
     id("com.github.ben-manes.versions") version "0.46.0"
     id("io.qameta.allure") version "2.11.2"
     id("org.gradle.test-retry") version "1.5.3"
@@ -21,7 +21,7 @@ dependencies {
     val log4jVersion = "2.20.0"
 
     testImplementation("org.testng:testng:7.8.0")
-    testImplementation("com.github.qky666:selenide-pom:0.18.3")
+    testImplementation("com.github.qky666:selenide-pom:0.18.4")
     testImplementation("org.apache.logging.log4j:log4j-core:$log4jVersion")
     testImplementation("org.apache.logging.log4j:log4j-slf4j2-impl:$log4jVersion")
     testImplementation("org.apache.logging.log4j:log4j-api-kotlin:1.2.0")
